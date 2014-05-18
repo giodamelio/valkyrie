@@ -1,0 +1,14 @@
+{
+  "name": "valkyrie",
+  "version": "0.1.0",
+  "description": "A noBackend module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "noBackend"
+  ],
+  "author": "Gio d'Amelio",
+  "license": "MIT"
+}
