@@ -22,17 +22,11 @@ describe("REST", function() {
 });
 
 describe("options", function() {
-    it("should always include options", function() {
-        (function() {
-            var server = express();
-            server.use(valkyrie());
-        }).should.throw("Missing options");
-    });
     it("should always include mongoUrl", function() {
         (function() {
             var server = express();
             server.use(valkyrie({}));
-        }).should.throw("instance.mongoUrl is required");
+        }).should.throw("mongoUrl is required");
     });
 });
 
