@@ -32,7 +32,7 @@ describe("options", function() {
         (function() {
             var server = express();
             server.use(valkyrie({}));
-        }).should.throw("Missing option: mongoUrl");
+        }).should.throw("instance.mongoUrl is required");
     });
 });
 

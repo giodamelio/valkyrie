@@ -9,6 +9,7 @@
   "author": "Gio d'Amelio",
   "license": "MIT",
   "dependencies": {
+    "jsonschema": "^0.4.0",
     "mongodb": "^1.4.4",
     "q": "^1.0.1"
   },
