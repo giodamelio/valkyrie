@@ -14,9 +14,12 @@
     "q": "^1.0.1"
   },
   "devDependencies": {
+    "coffee-script": "^1.7.1",
     "express": "^4.2.0",
     "gulp": "^3.6.2",
+    "gulp-coffee": "^1.4.3",
     "gulp-mocha": "^0.4.1",
+    "gulp-util": "^2.2.14",
     "mocha": "^1.19.0",
     "should": "^3.3.1",
     "supertest": "^0.12.1"
