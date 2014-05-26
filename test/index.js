@@ -21,12 +21,3 @@ describe("REST", function() {
     });
 });
 
-describe("options", function() {
-    it("should always include mongoUrl", function() {
-        (function() {
-            var server = express();
-            server.use(valkyrie({}));
-        }).should.throw("mongoUrl is required");
-    });
-});
-
