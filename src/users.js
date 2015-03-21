@@ -3,19 +3,12 @@ var router = require("koa-router")();
 module.exports = {
     path: "/users",
     middleware: function(db) {
-        var Users = db.get("users");
+        var Users = db.collection("Users");
 
+        // List users
         router.get("/", function*() {
             var users = yield Users.find({});
-
-            // Remove id's
-            users = users.map(function(user) {
-                var newUser = user;
-                delete newUser._id;
-                return newUser;
-            });
-
-            this.body = yield users;
+            this.body = users;
         });
 
         return router.routes();

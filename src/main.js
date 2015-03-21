@@ -1,28 +1,35 @@
 var koa = require("koa");
 var mount = require("koa-mount");
-var _ = require("lodash");
-var monk = require("monk");
+var co = require("co");
+var robe = require("robe");
+var _ = require("lodash").runInContext();
+_.mixin({"defaultsDeep": require("merge-defaults")});
 
 var logger = require("./logger");
 
 var defaultConfig = {
-    mongoUri: "localhost/valkyrie"
+    database: {
+        type: "mongodb",
+        url: "localhost/valkyrie"
+    }
 };
 
 module.exports = function(config) {
-    // Merge config with defaults
-    config = _.extend(defaultConfig, config);
+    return co(function*() {
+        // Merge config with defaults
+        config = _.defaultsDeep(config, defaultConfig);
 
-    // Connect to the database
-    var db = monk(config.mongoUri);
+        // Connect to the database
+        var db = yield robe.connect(config.database.url);
 
-    // Create our sub-server
-    var app = koa();
+        // Create our sub-server
+        var app = koa();
 
-    // Require our plugins
-    var users = require("./users");
-    app.use(mount(users.path, users.middleware(db)));
+        // Require our plugins
+        var users = require("./users");
+        app.use(mount(users.path, users.middleware(db)));
 
-    return mount("/", app);
+        return mount("/", app);
+    });
 };
 

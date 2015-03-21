@@ -1,14 +1,18 @@
+// Monky patch mocha to support co
+var mochaCo = require("co-mocha");
+
 var http = require("http");
 
 var koa = require("koa");
+var robe = require("robe");
 var supertest = require("supertest");
-var monk = require("monk");
-var bluebird = require("bluebird");
-var _ = require("lodash");
 
 var valkyrie = require("..");
 
-var databaseUri = "localhost/valkyrie-test";
+var databaseConfig = {
+    type: "mongodb",
+    url: "localhost/valkyrieTest"
+};
 
 var mockUsers = [
     {
@@ -26,58 +30,43 @@ var mockUsers = [
 ];
 
 describe("users", function() {
-    var server, app, db;
-    before(function() {
+    var server, app, db, Users;
+    before(function*() {
+        // Connect to the database
+        db = yield robe.connect(databaseConfig.url);
+
+        // Get users collection
+        Users = db.collection("Users");
+
         // Create koa app
         app = koa();
 
-        // Add valkyrie middleware
-        app.use(valkyrie({
-            mongoUri: databaseUri
+        // Add our middleware
+        app.use(yield valkyrie({
+            database: databaseConfig 
         }));
 
-        // Start the server
+        // Create the server
         server = http.createServer(app.callback());
-
-        // Connect to our database
-        db = monk(databaseUri);
-    });
-
-    // Delete mock data
-    after(function(done) {
-        db.get("users")
-            .remove({})
-            .then(function() {
-                done();
-            });
     });
 
     // Load our mock data
-    beforeEach(function(done) {
-        bluebird.all(mockUsers.map(function(user) {
-            var copyOfUser = _.cloneDeep(user);
-            console.log(copyOfUser);
-            return db.get("users").insert(copyOfUser);
-        })).then(function() {
-            console.log("Done");
-            done();
-        });
+    beforeEach(function*() {
+        yield Users.insert(mockUsers);
     });
 
     // Delete mock data
-    afterEach(function(done) {
-        db.get("users")
-            .remove({})
-            .then(function() {
-                done();
-            });
+    afterEach(function*() {
+        yield Users.remove({});
     });
 
     it("List users", function(done) {
         supertest(server)
             .get("/users")
             .expect(200)
-            .expect(mockUsers)
+            .expect(function(res) {
+                if (res.body.length !== 3) return "Wrong amount of users";
+            })
             .end(done);
     });
 });
