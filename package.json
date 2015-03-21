@@ -8,6 +8,8 @@
   "keywords": [
     "noBackend"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "koa": "^0.18.1"
+  },
   "devDependencies": {}
 }
