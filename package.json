@@ -12,5 +12,9 @@
     "koa": "^0.18.1",
     "winston": "^0.9.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "mocha": "^2.2.1",
+    "should": "^5.2.0",
+    "supertest": "^0.15.0"
+  }
 }
