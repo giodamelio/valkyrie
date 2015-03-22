@@ -1,6 +1,6 @@
 var router = require("koa-router")();
 
-var validator = require("./validations");
+var validator = require("./validator");
 
 module.exports = {
     path: "/users",
