@@ -79,6 +79,39 @@ describe("Users", function() {
                 })
                 .end(done);
         });
+        it("Invalid username (Non alphanumeric)", function(done) {
+            supertest(server)
+                .get("/users/exists/Invalid_Username")
+                .expect(200)
+                .expect(function(res) {
+                    if (res.body.name != "ValidationError" || res.body.details[0].type != "string.alphanum") {
+                        return "Validation fail";
+                    }
+                })
+                .end(done);
+        });
+        it("Invalid username (Too long)", function(done) {
+            supertest(server)
+                .get("/users/exists/ReallyReallyReallyLongUsername")
+                .expect(200)
+                .expect(function(res) {
+                    if (res.body.name != "ValidationError" || res.body.details[0].type != "string.max") {
+                        return "Validation fail";
+                    }
+                })
+                .end(done);
+        });
+        it("Invalid username (Too short)", function(done) {
+            supertest(server)
+                .get("/users/exists/short")
+                .expect(200)
+                .expect(function(res) {
+                    if (res.body.name != "ValidationError" || res.body.details[0].type != "string.min") {
+                        return "Validation fail";
+                    }
+                })
+                .end(done);
+        });
     });
 });
 
