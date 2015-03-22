@@ -10,9 +10,10 @@ module.exports = {
         // Check if user exists
         router.get("/exists/:username", function*() {
             // Check if username is valid
-            var isValid = yield validator.username(this.params.username); 
-            if (isValid.error) {
-                this.body = isValid.error;
+            try {
+                yield validator.username(this.params.username);
+            } catch (err) {
+                this.body = err;
                 return;
             }
 
