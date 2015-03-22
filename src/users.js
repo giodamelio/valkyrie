@@ -5,10 +5,21 @@ module.exports = {
     middleware: function(db) {
         var Users = db.collection("Users");
 
-        // List users
-        router.get("/", function*() {
-            var users = yield Users.find({});
-            this.body = users;
+        // Check if user exists
+        router.get("/exists/:username", function*() {
+            var user = yield Users.findOne({
+                username: this.params.username
+            });
+
+            if (user) {
+                this.body = {
+                    message: "Username exists"
+                };
+            } else {
+                this.body = {
+                    message: "Username available"
+                };
+            }
         });
 
         return router.routes();

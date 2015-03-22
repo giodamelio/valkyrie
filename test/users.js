@@ -29,7 +29,7 @@ var mockUsers = [
     }
 ];
 
-describe("users", function() {
+describe("Users", function() {
     var server, app, db, Users;
     before(function*() {
         // Connect to the database
@@ -60,14 +60,25 @@ describe("users", function() {
         yield Users.remove({});
     });
 
-    it("List users", function(done) {
-        supertest(server)
-            .get("/users")
-            .expect(200)
-            .expect(function(res) {
-                if (res.body.length !== 3) return "Wrong amount of users";
-            })
-            .end(done);
+    describe("Check if user exists", function() {
+        it("Existing username", function(done) {
+            supertest(server)
+                .get("/users/exists/giodamelio")
+                .expect(200)
+                .expect({
+                    message: "Username exists"
+                })
+                .end(done);
+        });
+        it("Available username", function(done) {
+            supertest(server)
+                .get("/users/exists/newUsername")
+                .expect(200)
+                .expect({
+                    message: "Username available"
+                })
+                .end(done);
+        });
     });
 });
 
