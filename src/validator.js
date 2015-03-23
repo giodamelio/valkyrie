@@ -11,6 +11,13 @@ module.exports = {
             .max(24)
             .alphanum()
         );
+    },
+    password: function(password) {
+        return validate(password, joi
+            .string()
+            .min(6)
+            .max(256)
+        );
     }
 };
 
