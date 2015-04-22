@@ -8,12 +8,6 @@
     "noBackend"
   ],
   "main": "src/main.js",
-  "dependencies": {
-    "hapi": "^8.4.0",
-    "joi": "^6.0.8"
-  },
-  "devDependencies": {
-    "mocha": "^2.2.1",
-    "should": "^5.2.0"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
